@@ -45,7 +45,7 @@ Installation
 
 There is no installation. Just download precompiled package from `binaries` directory (`stacky-x64.zip`, also contains CRT dependencies) and unzip.
 
-Direct link to precompiled binaries: https://github.com/pawelt/stacky/blob/master/binaries/stacky-x64.zip?raw=true
+Direct link to precompiled binaries: https://github.com/clau-bucur/stacky/blob/master/binaries/stacky-x64.zip?raw=true
 
 
 Compilation
