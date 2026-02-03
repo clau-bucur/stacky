@@ -1,21 +1,43 @@
 [Stacky] Simple icon stacks solution for Windows
 ============================================================================================
 
-WARNING: This project is no longer maintained.
-----------------------------------------------
+> **Upstream note:** the original project by Pawel Turlejski (`https://github.com/pawelt/stacky`) is no longer maintained.
+> This fork modernizes and extends Stacky while keeping the same “instant menu” philosophy.
 
-As you can tell from the commit history, the project hasn't been updated for a long time. Since I no longer use Windows, 
-I don't really have an easy way to even compile it anymore.
+## What is it
 
-Thank you for your kind words in the open issues (I just closed them all, as I won't be able to address them).
+Stacky is a small program for Windows that displays contents of a given directory as a list of clickable, labeled icons.
 
-Please feel free to fork the project and improve it. Good luck! :)
+It's designed to be pinned to the taskbar as a single shortcut that opens a fast popup menu of your shortcuts.
 
+## What’s new in this fork
+> Most changes were made with **AI assistance**
 
-What is it
-----------
+This fork keeps Stacky’s original caching approach and adds several quality-of-life and performance improvements:
+### Performance & UX
+- **Separators**
+- **Hides extension for certain file types**: bat, cmd, exe, lnk, url, vbs
+- **Shift+Click navigates to target**
+- **Multi-monitor support**
+- **Submenu support**
+- **Lazy submenu population**: submenus are built only when opened, which keeps the initial menu display snappy even for large stacks.
+- **Owner-draw menu rendering**:
+  - **DPI-aware icon scaling** (crisp icons on high-DPI displays)
+  - **Smart middle ellipsis for long paths** (base folder entry uses path ellipsis)
+- **Dark-mode aware rendering** (menu background/text/highlight colors - **not fully supported though - menu shadow is still light**)
 
-Stacky is a small program for Windows that displays contents of a given directory as a list of clickable, labled icons.
+### Organization features
+- **Submenus via folders ending in `.submenu`**
+  - `Tools.submenu\` becomes a submenu named `Tools`
+  - nested `.submenu` folders create nested submenus
+- **Separators via “marker files”**
+  - files ending in `.separator` or `.separator.lnk` are rendered as menu separators
+
+### Folder entry improvements
+- Top menu entry for the base folder:
+  - Respects `--hide-header`
+  - Uses the folder icon and also supports **custom folder icons from `desktop.ini`**
+  - Displays the only the folder name with `--compact-header` option or displays full path (and path-ellipsized when needed) without the option
 
 
 Installation
@@ -31,7 +53,12 @@ Compilation
 
 You can build Stacky with free Microsoft tools, using solution file in the `vsproj` directory.
 
-Full source code (about 500 lines of C++ code) is available in `src` directory.
+Full source code is available in `src` directory.
+
+Notes for this fork:
+- Tested with **Visual Studio 2026** and platform toolset **v145**.
+- The project uses standard Win32 APIs and links to common system libraries (e.g., `Comctl32`, plus any additional libs you added for rendering).
+
 
 
 How to use it
@@ -41,9 +68,18 @@ How to use it
 2. Create a folder and put shortcuts to your programs there.
 3. Edit the shortcut and add the folder's path to the `Target` field, so it looks something like this:
 
-      `D:\pawel\Programs\Stacky\stacky.exe  D:\pawel\Stacks\Games`
+      `D:\pawel\Programs\Stacky\stacky.exe D:\pawel\Stacks\Games`
       
 4. Drag the stack shortcut to your taskbar.
+
+### Options
+
+Append options after the folder's path:
+- `--hide-header` Hides the top menu entry (the base folder item) and its separator.
+- `--compact-header` Shows only the folder name for the top menu entry, instead of the full path.
+- `--dark-mode` Shows the menu in dark mode. Not fully supported though. The shadow still remains in light-mode.
+
+      `D:\pawel\Programs\Stacky\stacky.exe D:\pawel\Stacks\Games --compact-header --dark-mode`
 
 That's all. You can click the Stacky shortcut on the taskbar to open the new stack.
 
@@ -85,3 +121,6 @@ Any time the shortcuts folder is modified (new shrtcut is added etc.), the cache
 That's why stacky is faster than anything I've seen so far.
 
 
+## Credits
+
+Original project by Pawel Turlejski (`pawelt/stacky`).
